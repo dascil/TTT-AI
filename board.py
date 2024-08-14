@@ -38,7 +38,7 @@ class Board:
         print(" |     |     |     | ")
         print("-|-----|-----|-----|-")
 
-    def printBoardIndexes(self):
+    def printBoardIndexes():
         """
         Prints out the current game board.
         Takes in the values from boardValues.
