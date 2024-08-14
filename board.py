@@ -15,7 +15,7 @@ class Board:
 
     def swapPlayers(self):
         """
-        Changes to other player
+        Changes currentPlayer to other player
         """
         self.currentPlayer = "X" if self.currentPlayer == "O" else "O"
 
