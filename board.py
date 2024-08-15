@@ -5,6 +5,7 @@ class Board:
         self.boardValues = ["_"] * 9
         self.currentPlayer = ""
         self.wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
+        self.turn = 0
 
     def startingPlayer(self):
         """
@@ -56,3 +57,20 @@ class Board:
         print(" |  7  |  8  |  9  | ")
         print(" |     |     |     | ")
         print("-|-----|-----|-----|-")
+
+    def checkWin(self):
+        """
+        Check through every board combination to see if a win condition has happened
+        """
+        # Can't achieve a win if less than two moves by player happened
+        if self.turn < 5:
+            return False
+
+        # Checks all available wins
+        for win in self.wins:
+            # Checks to see if all indices match the current player in the array
+            winFound = all(indice == self.currentPlayer for indice in win)
+            if winFound:
+                return True
+
+        return False
