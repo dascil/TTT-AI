@@ -1,11 +1,20 @@
 import random as r
 
 class Board:
+
+    boardValues: list
+    wins: list
+    currentPlayer: str
+    humanPlayer: str
+    aiPlayer: str
+    turn: int
+    depth: int
+
     def __init__(self):
         self.boardValues = ["_"] * 9
-        self.currentPlayer = ""
         self.wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
         self.turn = 0
+        self.depth = 9
 
     def startingPlayer(self):
         """
@@ -58,19 +67,91 @@ class Board:
         print(" |     |     |     | ")
         print("-|-----|-----|-----|-")
 
-    def checkWin(self):
+    def checkWin(self, player):
         """
         Check through every board combination to see if a win condition has happened
         """
         # Can't achieve a win if less than two moves by player happened
         if self.turn < 5:
             return False
-
         # Checks all available wins
         for win in self.wins:
             # Checks to see if all indices match the current player in the array
-            winFound = all(indice == self.currentPlayer for indice in win)
+            winFound = True
+            for indice in win:
+                if self.boardValues[indice]  != player:
+                    winFound = False
             if winFound:
                 return True
 
         return False
+
+    def aiMoveSelect(self):
+        """
+        Picks the best move for the AI
+        """
+        (_, index) = self.minimax(True, 0)
+
+        self.boardValues[index] = self. aiPlayer
+
+    def minimax(self, isMax, depth):
+        """
+        Minimax algorithm with alpha beta pruning for TTT AI
+
+        Arguments:
+                isMax : boolean
+                    Is current level trying to minimize or maximize value
+                depth: integer
+                    How far to look ahead
+                alpha: integer
+                    Minimum score for maximizing player
+                beta: integer
+                    Maximum score for minimizing player
+        Returns:
+                value: integer
+                    The sum of values of either the node itself or its subtrees
+        """
+
+        # Check if AI won during this move
+        if isMax:
+            if self.checkWin(self.aiPlayer):
+                return (1, -1)
+
+        # Check if human player one during this move
+        else:
+            if self.checkWin(self.humanPlayer):
+                return (-1, -1)
+
+        # If draw or reached end of lookahead
+        if self.turn == 10 or depth == self.depth:
+            return (0,-1)
+
+        optimalValue =  float("-inf") if isMax else float("inf")
+        optimalIndex = -1
+
+
+        for index, value in enumerate(self.boardValues):
+            # Index already used
+            if value != "_":
+                continue
+
+            # Finds index with the highest chance of winning
+            # Sums up values for all subtrees
+
+            if isMax:
+                self.boardValues[index] = self.aiPlayer
+                potentialValue, _= self.minimax(False, depth+1)
+                if potentialValue > optimalValue:
+                    optimalValue = potentialValue
+                    optimalIndex = index
+
+            else:
+                self.boardValues[index] = self.humanPlayer
+                potentialValue, _= self.minimax(True, depth+1)
+                if potentialValue < optimalIndex:
+                    optimalValue = potentialValue
+                    optimalIndex = index
+
+            self.boardValues[index] = "_"
+
+        return optimalValue, optimalIndex
