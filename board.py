@@ -48,25 +48,6 @@ class Board:
         print(" |     |     |     | ")
         print("-|-----|-----|-----|-")
 
-    def printBoardIndexes():
-        """
-        Prints out the current game board.
-        Takes in the values from boardValues.
-        """
-        print("-|-----|-----|-----|-")
-        print(" |     |     |     | ")
-        print(" |  1  |  2  |  3  | ")
-        print(" |     |     |     | ")
-        print("-|-----|-----|-----|-")
-        print(" |     |     |     | ")
-        print(" |  4  |  5  |  6  | ")
-        print(" |     |     |     | ")
-        print("-|-----|-----|-----|-")
-        print(" |     |     |     | ")
-        print(" |  7  |  8  |  9  | ")
-        print(" |     |     |     | ")
-        print("-|-----|-----|-----|-")
-
     def checkWin(self, player):
         """
         Check through every board combination to see if a win condition has happened
@@ -92,7 +73,7 @@ class Board:
         """
         (_, index) = self.minimax(True, 0)
 
-        self.boardValues[index] = self. aiPlayer
+        self.boardValues[index] = self.aiPlayer
 
     def minimax(self, isMax, depth):
         """
