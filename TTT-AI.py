@@ -38,7 +38,7 @@ def TTT_AI():
         if game.currentPlayer == game.aiPlayer:
             print("My turn...")
             game.aiMoveSelect()
-            win = game.checkWin(game.humanPlayer)
+            win = game.checkWin(game.aiPlayer)
             if win:
                 game.printCurrentBoard()
                 print("I win!")

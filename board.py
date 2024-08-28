@@ -14,8 +14,11 @@ class Board:
         self.boardValues = ["_"] * 9
         self.wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
         self.turn = 0
-        self.depth = 9
+        self.depth = 3
 
+    # Easy 1-2
+    # Medium 3
+    # Hard 5+
     def startingPlayer(self):
         """
         Decides starting player for game
@@ -71,11 +74,11 @@ class Board:
         """
         Picks the best move for the AI
         """
-        (_, index) = self.minimax(True, 0)
-
+        (_, moves) = self.minimax(True, 0)
+        index = r.choice(moves)
         self.boardValues[index] = self.aiPlayer
 
-    def minimax(self, isMax, depth):
+    def minimax(self, isMax, depth, alpha=float('-inf'), beta=float('inf')):
         """
         Minimax algorithm with alpha beta pruning for TTT AI
 
@@ -108,13 +111,15 @@ class Board:
             return (0,-1)
 
         optimalValue =  float("-inf") if isMax else float("inf")
-        optimalIndex = -1
+        optimalMoves = []
 
 
         for index, value in enumerate(self.boardValues):
             # Index already used
             if value != "_":
                 continue
+
+            self.turn += 1
 
             # Finds index with the highest chance of winning
             # Sums up values for all subtrees
@@ -124,15 +129,22 @@ class Board:
                 potentialValue, _= self.minimax(False, depth+1)
                 if potentialValue > optimalValue:
                     optimalValue = potentialValue
-                    optimalIndex = index
+                    optimalMoves = [index]
+                elif potentialValue == optimalValue:
+                    optimalMoves.append(index)
+
 
             else:
                 self.boardValues[index] = self.humanPlayer
                 potentialValue, _= self.minimax(True, depth+1)
-                if potentialValue < optimalIndex:
+                if potentialValue < optimalValue:
                     optimalValue = potentialValue
-                    optimalIndex = index
+                    optimalMoves = [index]
+                elif potentialValue == optimalValue:
+                    optimalMoves.append(index)
+
 
             self.boardValues[index] = "_"
+            self.turn -= 1
 
-        return optimalValue, optimalIndex
+        return optimalValue, optimalMoves
