@@ -54,3 +54,41 @@ class TestBoard(unittest.TestCase):
     self.board.boardValues = ["X"] * 9
     hasWon = self.board.checkWin("O")
     self.assertEqual(False, hasWon)
+
+  def testAIMoveOptimalStartingMoveGoFirst(self):
+    self.board.aiPlayer = "O"
+    self.board.humanPlayer = "X"
+    self.board.currentPlayer = self.board.aiPlayer
+    self.board.depth = 9
+    optimalMove = (["O","_","_","_","_","_","_","_","_"],["_","_","O","_","_","_","_","_","_"],["_","_","_","_","_","_","O","_","_"],["_","_","_","_","_","_","_","_","O"])
+    self.board.aiMoveSelect()
+    self.assertIn(self.board.boardValues,optimalMove)
+
+  def testAIMoveOptimalStartingMoveGoSecond(self):
+    self.board.aiPlayer = "O"
+    self.board.humanPlayer = "X"
+    self.board.currentPlayer = self.board.aiPlayer
+    self.board.depth = 9
+    self.board.boardValues = ["X","_","_","_","_","_","_","_","_"]
+    self.board.aiMoveSelect()
+    self.assertEqual(self.board.boardValues,["X","_","_","_","O","_","_","_","_"])
+
+  def testAIMoveStopLoss(self):
+    self.board.aiPlayer = "O"
+    self.board.humanPlayer = "X"
+    self.board.currentPlayer = self.board.aiPlayer
+    self.board.depth = 9
+    self.board.turn = 5
+    self.board.boardValues = ["X","X","_","O","_","_","O","_","_"]
+    self.board.aiMoveSelect()
+    self.assertEqual(self.board.boardValues,["X","X","O","O","_","_","O","_","_"])
+
+  def testAIMoveGoForWin(self):
+    self.board.aiPlayer = "O"
+    self.board.humanPlayer = "X"
+    self.board.currentPlayer = self.board.aiPlayer
+    self.board.depth = 9
+    self.board.turn = 5
+    self.board.boardValues = ["O","O","_","X","_","_","X","_","_"]
+    self.board.aiMoveSelect()
+    self.assertEqual(self.board.boardValues,["O","O","O","X","_","_","X","_","_"])

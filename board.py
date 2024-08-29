@@ -10,15 +10,16 @@ class Board:
     turn: int
     depth: int
 
+
+    # Easy - Depth == 1-2
+    # Medium - Depth == 3
+    # Hard - Depth >= 5
     def __init__(self):
         self.boardValues = ["_"] * 9
         self.wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
         self.turn = 0
         self.depth = 3
 
-    # Easy 1-2
-    # Medium 3
-    # Hard 5+
     def startingPlayer(self):
         """
         Decides starting player for game
@@ -78,6 +79,7 @@ class Board:
         index = r.choice(moves)
         self.boardValues[index] = self.aiPlayer
 
+    # TODO: Implement alpha beta pruning and add a heuristic
     def minimax(self, isMax, depth, alpha=float('-inf'), beta=float('inf')):
         """
         Minimax algorithm with alpha beta pruning for TTT AI
@@ -110,6 +112,7 @@ class Board:
         if self.turn == 10 or depth == self.depth:
             return (0,-1)
 
+        # Variables for return values
         optimalValue =  float("-inf") if isMax else float("inf")
         optimalMoves = []
 
@@ -119,11 +122,10 @@ class Board:
             if value != "_":
                 continue
 
+            # Increment for recursion
             self.turn += 1
 
-            # Finds index with the highest chance of winning
-            # Sums up values for all subtrees
-
+            # Recurses into branch and will either optimal value, add to set, or skip the results
             if isMax:
                 self.boardValues[index] = self.aiPlayer
                 potentialValue, _= self.minimax(False, depth+1)
@@ -144,6 +146,7 @@ class Board:
                     optimalMoves.append(index)
 
 
+            # Undo changes to board
             self.boardValues[index] = "_"
             self.turn -= 1
 
