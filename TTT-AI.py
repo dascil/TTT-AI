@@ -1,18 +1,23 @@
 from board import Board
+import TextChecker
 
 def TTT_AI():
     print("Welcome to Tic-Tac-Toe")
     game = Board()
-    print("Would you like to be X or O?")
     # Prompt user to pick X or O
     # Decide who goes first
     # Initiate Game
     # Keep going until an exit state is found
     # Prompt user to choose if they want to play again
-    userInput = input()
+    validInput = False
+    while not validInput:
+        print("Would you like to be X or O?")
+        userInput = str(input()).upper()
+        validInput = TextChecker.checkValidPlayer(userInput)
+        if not validInput:
+            print("Your response is not valid.\nPlease type X or O.")
     print("You will be {}".format(userInput))
-    game.humanPlayer = "X"
-    game.aiPlayer= "O"
+    game.setPlayers(userInput)
     print("Lets see who goes first")
     game.startingPlayer()
     if game.currentPlayer == game.humanPlayer:

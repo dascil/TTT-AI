@@ -20,6 +20,17 @@ class Board:
         self.turn = 0
         self.depth = 3
 
+    def setPlayers(self, humanPlayer):
+        """
+        Sets players for the board
+
+        Arguments:
+                humanPlayer: str
+                The piece the player chose
+        """
+        self.humanPlayer = humanPlayer
+        self.aiPlayer = "X" if humanPlayer == "O" else "X"
+
     def startingPlayer(self):
         """
         Decides starting player for game
