@@ -1,5 +1,7 @@
 import random as r
 
+
+
 class Board:
 
     boardValues: list
@@ -9,6 +11,7 @@ class Board:
     aiPlayer: str
     turn: int
     depth: int
+    GAME_END = 10
 
 
     # Easy - Depth == 1-2
