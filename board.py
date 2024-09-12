@@ -23,6 +23,21 @@ class Board:
         self.turn = 0
         self.depth = 3
 
+    def incrementTurn(self):
+        """
+        Increments turn for the game
+        """
+        self.turn += 1
+
+    def changeCurrentPlayer(self):
+        """
+        Change current player
+        """
+        if self.currentPlayer == self.humanPlayer:
+            self.currentPlayer = self.aiPlayer
+        else:
+            self.currentPlayer = self.humanPlayer
+
     def setPlayers(self, humanPlayer):
         """
         Sets players for the board
