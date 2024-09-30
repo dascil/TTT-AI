@@ -1,4 +1,5 @@
 from board import Board
+import re
 
 def initializeBoard():
     print("Welcome to Tic-Tac-Toe")
@@ -17,6 +18,26 @@ def chooseGamePiece(game:Board):
 
 def checkValidPlayer(userInput:str):
     return userInput == "X" or userInput == "O"
+
+def checkValidMoveInput(userInput: str):
+    pattern = r'^[1-9]+$'
+    return len(userInput) == 1 and re.match(pattern,userInput)
+
+def humanMoveSelect(game: Board):
+    validInput = False
+    while not validInput:
+        print("Please pick an available move")
+        userInput = input()
+        validInput = checkValidMoveInput(userInput)
+        if not validInput:
+            print("The choice you made is not in the correct format.\nPlease pick a value between 1-9.")
+            continue
+        userInput = int(userInput)-1
+        if game.boardValues[userInput] != "_":
+            validInput = False
+            print("That spot is already in use.\nPlease pick a different spot.")
+        else:
+            game.boardValues[userInput] = game.humanPlayer
 
 def chooseWhoGoesFirst(game: Board):
     print("Lets see who goes first")

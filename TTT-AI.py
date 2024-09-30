@@ -1,5 +1,5 @@
 from board import Board
-import TTTUI as ui
+import UI as ui
 
 def TTT_AI():
     # Initiate Game
@@ -8,29 +8,31 @@ def TTT_AI():
     game = ui.initializeBoard()
     ui.chooseGamePiece(game)
     ui.chooseWhoGoesFirst(game)
-    while True:
-        game.incrementTurn()
+    winFound = False
+    while not winFound and game.turn < game.GAME_END:
         game.printCurrentBoard()
-        if game.turn == game.GAME_END:
-            print("It is a draw.")
-            break
 
         if game.currentPlayer == game.humanPlayer:
-            print("Please pick an available move")
-            userInput = input()
-            game.boardValues[int(userInput)-1] = game.humanPlayer
+            ui.humanMoveSelect(game)
 
         else:
             print("My turn...")
             game.aiMoveSelect()
 
-        if game.checkWin(game.currentPlayer):
-            winMessage = "I win!" if game.currentPlayer == game.aiPlayer else "You win."
-            game.printCurrentBoard()
-            print(winMessage)
-            break
+        winFound = game.checkWin(game.currentPlayer)
 
-        game.changeCurrentPlayer()
+        if not winFound:
+            game.changeCurrentPlayer()
+
+        game.incrementTurn()
+
+    game.printCurrentBoard()
+
+    if winFound:
+        winMessage = "I win!" if game.currentPlayer == game.aiPlayer else "You win."
+        print(winMessage)
+    else:
+        print("It is a draw.")
 
 
 if __name__ == "__main__":

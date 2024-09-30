@@ -20,7 +20,7 @@ class Board:
     def __init__(self):
         self.boardValues = ["_"] * 9
         self.wins = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
-        self.turn = 0
+        self.turn = 1
         self.depth = 3
 
     def incrementTurn(self):
@@ -47,7 +47,7 @@ class Board:
                 The piece the player chose
         """
         self.humanPlayer = humanPlayer
-        self.aiPlayer = "X" if humanPlayer == "O" else "X"
+        self.aiPlayer = "X" if humanPlayer == "O" else "O"
 
     def startingPlayer(self):
         """
